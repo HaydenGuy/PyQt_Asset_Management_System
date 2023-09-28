@@ -10,7 +10,7 @@ class Asset:
         self.type = type
         self.extension = extension
 
-# Function to get the metadata from a file
+# Get the metadata from a file
 def get_metadata(file):
     # Gets the file size and uses humanize to put it in readable format
     file_size = os.path.getsize(file)
@@ -30,10 +30,19 @@ def get_metadata(file):
 
     return file_size_readable, creation_time_readable, modification_time_readable, file_permissions_readable
 
-# TEMPORARY code
+# Gets the files name and extension
+def get_file_name_extension(file):
+    file_name = os.path.splitext(file)[0]
+
+    file_extension = os.path.splitext(file)[1]
+
+    return file_name, file_extension
+
+
+# TEMPORARY CODE
 os.chdir("testing")
 current_dir = os.getcwd()
 file_list = os.listdir(current_dir)
 
 for file in file_list:
-    print(get_metadata(file))
+    print(get_file_name_extension(file))
