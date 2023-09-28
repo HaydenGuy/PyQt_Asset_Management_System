@@ -19,41 +19,60 @@ class Asset_Category:
         self.assets = []
 
     # Add an asset to the category by adding to the assets list
-    def add_asset(self, asset):
-        self.assets.append(asset)
+    def add_asset(self, asset, metadata):
+        self.assets.append([asset, metadata])
 
     # Remove an asset by iterating through the assets list and removing a matched item
     def remove_asset(self, remove_asset):
-        for asset in self.assets:
+        for asset, metadata in self.assets:
             if asset.name == remove_asset:
-                self.assets.remove(asset)
-                return f"Removed: {asset}"
+                self.assets.remove([asset, metadata])
+                return f"Removed: {asset, metadata}"
     
     # Returns the assets list
     def list_assets(self):
         return self.assets
-        
-# Get the metadata from a file
-def get_metadata(file):
-    # Gets the file size and uses humanize to put it in readable format
+
+# Gets the file size and uses humanize to put it in readable format
+def get_file_size(file):
     file_size = os.path.getsize(file)
     file_size_readable = humanize.naturalsize(file_size)
 
-    # Gets the file creation time and uses datetime to put it in readable format
+    return file_size_readable
+
+# Gets the file creation time and uses datetime to put it in readable format
+def get_file_creation_time(file):
     file_creation_time = os.path.getctime(file)
     creation_time_readable = datetime.datetime.fromtimestamp(
         file_creation_time).strftime('%Y_%m_%d_%H_%M_%S')
 
-    # Gets the file modification time and uses datetime to put it in readable format
+    return creation_time_readable
+
+# Gets the file modification time and uses datetime to put it in readable format
+def get_file_modification_time(file):
     file_modification_time = os.path.getmtime(file)
     modification_time_readable = datetime.datetime.fromtimestamp(
         file_modification_time).strftime('%Y_%m_%d_%H_%M_%S')
+    
+    return modification_time_readable
 
-    # Gets the file permissions and uses stat to put it in readable format
+# Gets the file permissions and uses stat to put it in readable format
+def get_file_permissions(file):
     file_permissions = os.stat(file).st_mode
     file_permissions_readable = stat.filemode(file_permissions)
 
-    return file_size_readable, creation_time_readable, modification_time_readable, file_permissions_readable
+    return file_permissions_readable
+
+# Add the files metadata to a list
+def get_metadata(file):
+    file_metadata = []
+
+    file_metadata.append(get_file_size(file))
+    file_metadata.append(get_file_creation_time(file))
+    file_metadata.append(get_file_modification_time(file))
+    file_metadata.append(get_file_permissions(file))
+
+    return file_metadata
 
 # Gets the file name, extension, and what type of file it is
 def get_file_details(file):
@@ -101,20 +120,32 @@ production_assets = Asset_Category()
 
 for file in file_list:
     asset = create_asset(file)
-    
+    metadata = get_metadata(file)
+     
     if asset.type == "video":
-        video_assets.add_asset(asset)
+        video_assets.add_asset(asset, metadata)
     elif asset.type == "text":
-        text_assets.add_asset(asset)
+        text_assets.add_asset(asset, metadata)
     elif asset.type == "image":
-        image_assets.add_asset(asset)
+        image_assets.add_asset(asset, metadata)
     elif asset.type == "model":
-        model_assets.add_asset(asset)
+        model_assets.add_asset(asset, metadata)
     elif asset.type == "production":
-        production_assets.add_asset(asset)
+        production_assets.add_asset(asset, metadata)
 
-for asset in video_assets.list_assets():
-    print(asset)
+video_assets.remove_asset("spin")
 
-# for asset in production_assets.list_assets():
-#     print(asset)
+for asset, metadata in video_assets.list_assets():
+    print(asset, metadata)
+
+# for asset, metadata in text_assets.list_assets():
+#     print(asset, metadata)
+
+# for asset, metadata in image_assets.list_assets():
+#     print(asset, metadata)
+
+# for asset, metadata in model_assets.list_assets():
+#     print(asset, metadata)
+
+# for asset, metadata in production_assets.list_assets():
+#     print(asset, metadata)
