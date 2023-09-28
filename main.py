@@ -4,15 +4,35 @@ import humanize
 import stat
 
 # Class to define an asset
-
-
 class Asset:
     def __init__(self, name, extension, type):
         self.name = name
         self.extension = extension
         self.type = type
 
+    def __str__(self):
+        return f'{self.name} | {self.extension} | {self.type}'
 
+# Class to define asset categories
+class Asset_Category:
+    def __init__(self):
+        self.assets = []
+
+    # Add an asset to the category by adding to the assets list
+    def add_asset(self, asset):
+        self.assets.append(asset)
+
+    # Remove an asset by iterating through the assets list and removing a matched item
+    def remove_asset(self, remove_asset):
+        for asset in self.assets:
+            if asset.name == remove_asset:
+                self.assets.remove(asset)
+                return f"Removed: {asset}"
+    
+    # Returns the assets list
+    def list_assets(self):
+        return self.assets
+        
 # Get the metadata from a file
 def get_metadata(file):
     # Gets the file size and uses humanize to put it in readable format
@@ -36,8 +56,6 @@ def get_metadata(file):
     return file_size_readable, creation_time_readable, modification_time_readable, file_permissions_readable
 
 # Gets the file name, extension, and what type of file it is
-
-
 def get_file_details(file):
     file_name, file_extension = os.path.splitext(file)
 
@@ -54,6 +72,11 @@ def get_file_details(file):
 
     return file_name, file_extension, file_type
 
+def create_asset(file):
+    name, extension, type = get_file_details(file)
+    asset = Asset(name, extension, type)
+    
+    return asset
 
 # Sets containing common file formats
 video_formats = {'.mp4', '.avi', '.mov',
@@ -70,13 +93,28 @@ os.chdir('testing')
 current_dir = os.getcwd()
 file_list = os.listdir(current_dir)
 
-assets = []
+video_assets = Asset_Category()
+text_assets = Asset_Category()
+image_assets = Asset_Category()
+model_assets = Asset_Category()
+production_assets = Asset_Category()
 
 for file in file_list:
-    name, extension, type = get_file_details(file)
+    asset = create_asset(file)
+    
+    if asset.type == "video":
+        video_assets.add_asset(asset)
+    elif asset.type == "text":
+        text_assets.add_asset(asset)
+    elif asset.type == "image":
+        image_assets.add_asset(asset)
+    elif asset.type == "model":
+        model_assets.add_asset(asset)
+    elif asset.type == "production":
+        production_assets.add_asset(asset)
 
-    asset = Asset(name, extension, type)
-    assets.append(asset)
+for asset in video_assets.list_assets():
+    print(asset)
 
-for asset in assets:
-    print(f"{asset.name} : {asset.extension} : {asset.type}")
+# for asset in production_assets.list_assets():
+#     print(asset)
