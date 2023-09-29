@@ -22,12 +22,11 @@ class Asset_Category:
     def add_asset(self, asset, metadata):
         self.assets.append([asset, metadata])
 
-    # Remove an asset by iterating through the assets list and removing a matched item
+    # Remove an asset and its metadata by iterating through the assets list and removing a matched item
     def remove_asset(self, remove_asset):
         for asset, metadata in self.assets:
             if asset.name == remove_asset:
                 self.assets.remove([asset, metadata])
-                return f"Removed: {asset, metadata}"
     
     # Returns the assets list
     def list_assets(self):
@@ -118,6 +117,7 @@ image_assets = Asset_Category()
 model_assets = Asset_Category()
 production_assets = Asset_Category()
 
+# Adds files in the current directory to the asset class 
 for file in file_list:
     asset = create_asset(file)
     metadata = get_metadata(file)
@@ -133,7 +133,6 @@ for file in file_list:
     elif asset.type == "production":
         production_assets.add_asset(asset, metadata)
 
-video_assets.remove_asset("spin")
 
 for asset, metadata in video_assets.list_assets():
     print(asset, metadata)
