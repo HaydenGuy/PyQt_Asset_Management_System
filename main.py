@@ -106,7 +106,7 @@ production_formats = {'.usd', '.ma', '.mb', '.uasset',
                       '.psd', '.ai', '.prproj', '.aep', '.drp'}
 
 
-# TEMPORARY CODE
+# TEMPORARY CODE - to be deleted/reworked
 os.chdir('testing')
 current_dir = os.getcwd()
 file_list = os.listdir(current_dir)
