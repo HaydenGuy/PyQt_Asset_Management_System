@@ -1,7 +1,11 @@
 import os
+import sys
 import datetime
 import humanize
 import stat
+
+from PySide2.QtWidgets import QMainWindow, QApplication
+from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
 class Asset:
@@ -31,6 +35,12 @@ class Asset_Category:
     # Returns the assets list
     def list_assets(self):
         return self.assets
+    
+
+class name(QMainWindow, Ui_asset_management):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 # Gets the file size and uses humanize to put it in readable format
 def get_file_size(file):
@@ -148,3 +158,11 @@ for asset, metadata in video_assets.list_assets():
 
 # for asset, metadata in production_assets.list_assets():
 #     print(asset, metadata)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+
+    window = name()
+    window.show()
+
+    sys.exit(app.exec_())
