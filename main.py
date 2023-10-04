@@ -1,10 +1,8 @@
 import os
 import sys
-import datetime
-import humanize
-import stat
+import datetime, humanize, stat
 
-from PySide2.QtWidgets import QMainWindow, QApplication
+from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem
 from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
@@ -15,7 +13,7 @@ class Asset:
         self.type = type
 
     def __str__(self):
-        return f'{self.name} | {self.extension} | {self.type}'
+        return f'{self.name}{self.extension}'
 
 # Class to define asset categories
 class Asset_Category:
@@ -57,7 +55,7 @@ class name(QMainWindow, Ui_asset_management):
         self.model_assets = Asset_Category()
         self.production_assets = Asset_Category()
 
-        self.print_test()
+        self.populate_lists()
 
 
     # Gets the file size and uses humanize to put it in readable format
@@ -124,7 +122,7 @@ class name(QMainWindow, Ui_asset_management):
         
         return asset
     
-    def print_test(self):
+    def populate_lists(self):
         # Adds files in the current directory to the asset class 
         for file in file_list:
             asset = self.create_asset(file)
@@ -142,8 +140,25 @@ class name(QMainWindow, Ui_asset_management):
                 self.production_assets.add_asset(asset, metadata)
 
         for asset, metadata in self.video_assets.list_assets():
-            print(asset, metadata)
-        
+            list_item = QListWidgetItem(f"{asset} \n {metadata}")
+            self.video_list.addItem(list_item)
+
+        for asset, metadata in self.text_assets.list_assets():
+            list_item = QListWidgetItem(f"{asset} \n {metadata}")
+            self.text_list.addItem(list_item)
+
+        for asset, metadata in self.image_assets.list_assets():
+            list_item = QListWidgetItem(f"{asset} \n {metadata}")
+            self.image_list.addItem(list_item)
+
+        for asset, metadata in self.model_assets.list_assets():
+            list_item = QListWidgetItem(f"{asset} \n {metadata}")
+            self.model_list.addItem(list_item)
+
+        for asset, metadata in self.production_assets.list_assets():
+            list_item = QListWidgetItem(f"{asset} \n {metadata}")
+            self.production_list.addItem(list_item)
+                
 
 # TEMPORARY CODE - to be deleted/reworked
 os.chdir('testing')

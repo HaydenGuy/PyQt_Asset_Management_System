@@ -20,7 +20,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="video_tab">
          <attribute name="title">
@@ -28,7 +28,7 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QListView" name="listView_2"/>
+           <widget class="QListWidget" name="video_list"/>
           </item>
          </layout>
         </widget>
@@ -36,22 +36,41 @@
          <attribute name="title">
           <string>Text</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QListWidget" name="text_list"/>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="image_tab">
          <attribute name="title">
           <string>Image</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QListWidget" name="image_list"/>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="model_tab">
          <attribute name="title">
           <string>Model</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QListWidget" name="model_list"/>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="production_tab">
          <attribute name="title">
           <string>Production</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_3"/>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QListWidget" name="production_list"/>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>

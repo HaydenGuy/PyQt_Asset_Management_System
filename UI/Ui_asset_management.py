@@ -30,25 +30,51 @@ class Ui_asset_management(object):
         self.video_tab.setObjectName(u"video_tab")
         self.verticalLayout_4 = QVBoxLayout(self.video_tab)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.listView_2 = QListView(self.video_tab)
-        self.listView_2.setObjectName(u"listView_2")
+        self.video_list = QListWidget(self.video_tab)
+        self.video_list.setObjectName(u"video_list")
 
-        self.verticalLayout_4.addWidget(self.listView_2)
+        self.verticalLayout_4.addWidget(self.video_list)
 
         self.tabWidget.addTab(self.video_tab, "")
         self.text_tab = QWidget()
         self.text_tab.setObjectName(u"text_tab")
+        self.verticalLayout_5 = QVBoxLayout(self.text_tab)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.text_list = QListWidget(self.text_tab)
+        self.text_list.setObjectName(u"text_list")
+
+        self.verticalLayout_5.addWidget(self.text_list)
+
         self.tabWidget.addTab(self.text_tab, "")
         self.image_tab = QWidget()
         self.image_tab.setObjectName(u"image_tab")
+        self.verticalLayout_6 = QVBoxLayout(self.image_tab)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.image_list = QListWidget(self.image_tab)
+        self.image_list.setObjectName(u"image_list")
+
+        self.verticalLayout_6.addWidget(self.image_list)
+
         self.tabWidget.addTab(self.image_tab, "")
         self.model_tab = QWidget()
         self.model_tab.setObjectName(u"model_tab")
+        self.verticalLayout_7 = QVBoxLayout(self.model_tab)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.model_list = QListWidget(self.model_tab)
+        self.model_list.setObjectName(u"model_list")
+
+        self.verticalLayout_7.addWidget(self.model_list)
+
         self.tabWidget.addTab(self.model_tab, "")
         self.production_tab = QWidget()
         self.production_tab.setObjectName(u"production_tab")
         self.verticalLayout_3 = QVBoxLayout(self.production_tab)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.production_list = QListWidget(self.production_tab)
+        self.production_list.setObjectName(u"production_list")
+
+        self.verticalLayout_3.addWidget(self.production_list)
+
         self.tabWidget.addTab(self.production_tab, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
@@ -67,7 +93,7 @@ class Ui_asset_management(object):
 
         self.retranslateUi(asset_management)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(asset_management)
