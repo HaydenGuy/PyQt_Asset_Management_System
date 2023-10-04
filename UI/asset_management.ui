@@ -16,7 +16,46 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout"/>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="video_tab">
+         <attribute name="title">
+          <string>Video</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QListView" name="listView_2"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="text_tab">
+         <attribute name="title">
+          <string>Text</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="image_tab">
+         <attribute name="title">
+          <string>Image</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="model_tab">
+         <attribute name="title">
+          <string>Model</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="production_tab">
+         <attribute name="title">
+          <string>Production</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3"/>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
