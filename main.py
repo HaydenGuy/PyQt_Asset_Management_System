@@ -130,34 +130,28 @@ class name(QMainWindow, Ui_asset_management):
             
             if asset.type == "video":
                 self.video_assets.add_asset(asset, metadata)
+                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                self.video_list.addItem(list_item)
+
             elif asset.type == "text":
                 self.text_assets.add_asset(asset, metadata)
+                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                self.text_list.addItem(list_item)
+
             elif asset.type == "image":
                 self.image_assets.add_asset(asset, metadata)
+                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                self.image_list.addItem(list_item)
+
             elif asset.type == "model":
                 self.model_assets.add_asset(asset, metadata)
+                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                self.model_list.addItem(list_item)
+                
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
-
-        for asset, metadata in self.video_assets.list_assets():
-            list_item = QListWidgetItem(f"{asset} \n {metadata}")
-            self.video_list.addItem(list_item)
-
-        for asset, metadata in self.text_assets.list_assets():
-            list_item = QListWidgetItem(f"{asset} \n {metadata}")
-            self.text_list.addItem(list_item)
-
-        for asset, metadata in self.image_assets.list_assets():
-            list_item = QListWidgetItem(f"{asset} \n {metadata}")
-            self.image_list.addItem(list_item)
-
-        for asset, metadata in self.model_assets.list_assets():
-            list_item = QListWidgetItem(f"{asset} \n {metadata}")
-            self.model_list.addItem(list_item)
-
-        for asset, metadata in self.production_assets.list_assets():
-            list_item = QListWidgetItem(f"{asset} \n {metadata}")
-            self.production_list.addItem(list_item)
+                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                self.production_list.addItem(list_item)
                 
 
 # TEMPORARY CODE - to be deleted/reworked
