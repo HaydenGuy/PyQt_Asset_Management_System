@@ -1,3 +1,5 @@
+#!/usr/bin/python3.10
+
 import os
 import sys
 import datetime, humanize, stat
@@ -147,19 +149,24 @@ class name(QMainWindow, Ui_asset_management):
                 self.model_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(f"{asset} \n {metadata}")
                 self.model_list.addItem(list_item)
-                
+
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(f"{asset} \n {metadata}")
                 self.production_list.addItem(list_item)
                 
-
-# TEMPORARY CODE - to be deleted/reworked
-os.chdir('testing')
-current_dir = os.getcwd()
-file_list = os.listdir(current_dir)
-
 if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        folder_path = os.getcwd()
+    else:
+        os.chdir(sys.argv[1])
+        folder_path = os.getcwd()
+
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        file_list = os.listdir(folder_path)
+    else:
+        print("Invalid path", file=sys.stderr)
+
     app = QApplication(sys.argv)
 
     window = name()

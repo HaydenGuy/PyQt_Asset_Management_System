@@ -18,6 +18,8 @@ class Ui_asset_management(object):
         if not asset_management.objectName():
             asset_management.setObjectName(u"asset_management")
         asset_management.resize(800, 600)
+        self.actionOpen = QAction(asset_management)
+        self.actionOpen.setObjectName(u"actionOpen")
         self.centralwidget = QWidget(asset_management)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
@@ -86,10 +88,15 @@ class Ui_asset_management(object):
         self.menubar = QMenuBar(asset_management)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 800, 23))
+        self.menuFile = QMenu(self.menubar)
+        self.menuFile.setObjectName(u"menuFile")
         asset_management.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(asset_management)
         self.statusbar.setObjectName(u"statusbar")
         asset_management.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menuFile.addAction(self.actionOpen)
 
         self.retranslateUi(asset_management)
 
@@ -101,10 +108,12 @@ class Ui_asset_management(object):
 
     def retranslateUi(self, asset_management):
         asset_management.setWindowTitle(QCoreApplication.translate("asset_management", u"Asset Management", None))
+        self.actionOpen.setText(QCoreApplication.translate("asset_management", u"Open", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.video_tab), QCoreApplication.translate("asset_management", u"Video", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.text_tab), QCoreApplication.translate("asset_management", u"Text", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.image_tab), QCoreApplication.translate("asset_management", u"Image", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.model_tab), QCoreApplication.translate("asset_management", u"Model", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.production_tab), QCoreApplication.translate("asset_management", u"Production", None))
+        self.menuFile.setTitle(QCoreApplication.translate("asset_management", u"File", None))
     # retranslateUi
 
