@@ -51,6 +51,7 @@ class name(QMainWindow, Ui_asset_management):
         self.production_formats = {'.usd', '.ma', '.mb', '.uasset',
                               '.psd', '.ai', '.prproj', '.aep', '.drp'}
         
+        # Uses the Asset_Catergory class to define each category
         self.video_assets = Asset_Category()
         self.text_assets = Asset_Category()
         self.image_assets = Asset_Category()
@@ -118,12 +119,14 @@ class name(QMainWindow, Ui_asset_management):
 
         return file_name, file_extension, file_type
 
+    # Creates an asset using the Asset class
     def create_asset(self, file):
         name, extension, type = self.get_file_details(file)
         asset = Asset(name, extension, type)
         
         return asset
     
+    # Populate the UI tab lists based on the files found in the folder 
     def populate_lists(self):
         # Adds files in the current directory to the asset class 
         for file in file_list:
@@ -154,7 +157,8 @@ class name(QMainWindow, Ui_asset_management):
                 self.production_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(f"{asset} \n {metadata}")
                 self.production_list.addItem(list_item)
-                
+
+# For future, add recursive checking of folders and implement that structure into UI
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         folder_path = os.getcwd()
