@@ -158,7 +158,7 @@ class name(QMainWindow, Ui_asset_management):
                 list_item = QListWidgetItem(f"{asset} \n {metadata}")
                 self.production_list.addItem(list_item)
 
-# For future, add recursive checking of folders and implement that structure into UI
+# For future, add recursive checking of folders and implement that structure into UI 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         folder_path = os.getcwd()
