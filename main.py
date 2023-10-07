@@ -116,6 +116,8 @@ class name(QMainWindow, Ui_asset_management):
             file_type = "model"
         elif file_extension in self.production_formats:
             file_type = "production"
+        else:
+            file_type = "unknown"
 
         return file_name, file_extension, file_type
 
@@ -158,7 +160,17 @@ class name(QMainWindow, Ui_asset_management):
                 list_item = QListWidgetItem(f"{asset} \n {metadata}")
                 self.production_list.addItem(list_item)
 
-# For future, add recursive checking of folders and implement that structure into UI 
+# Uses os.walk to check subfolders for files
+def list_files_recursively(root_dir):
+    file_list = []
+
+    for root, dirs, files in os.walk(root_dir):
+        for file in files:
+            file_list.append(os.path.join(root, file))
+
+    return file_list
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         folder_path = os.getcwd()
@@ -167,7 +179,7 @@ if __name__ == '__main__':
         folder_path = os.getcwd()
 
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        file_list = os.listdir(folder_path)
+        file_list = list_files_recursively(folder_path)
     else:
         print("Invalid path", file=sys.stderr)
 
