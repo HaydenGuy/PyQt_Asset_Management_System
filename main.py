@@ -170,7 +170,7 @@ def list_files_recursively(root_dir):
 
     return file_list
 
-
+# Fix issue with recursion
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         folder_path = os.getcwd()
