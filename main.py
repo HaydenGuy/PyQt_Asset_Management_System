@@ -104,7 +104,10 @@ class name(QMainWindow, Ui_asset_management):
 
     # Gets the file name, extension, and what type of file it is
     def get_file_details(self, file):
-        file_name, file_extension = os.path.splitext(file)
+        file_path, file_extension = os.path.splitext(file)
+
+        split_name = file_path.split('/')
+        file_name = split_name[-1]
 
         if file_extension in self.video_formats:
             file_type = "video"
@@ -137,27 +140,27 @@ class name(QMainWindow, Ui_asset_management):
             
             if asset.type == "video":
                 self.video_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.video_list.addItem(list_item)
 
             elif asset.type == "text":
                 self.text_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.text_list.addItem(list_item)
 
             elif asset.type == "image":
                 self.image_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.image_list.addItem(list_item)
 
             elif asset.type == "model":
                 self.model_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.model_list.addItem(list_item)
 
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata}")
+                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.production_list.addItem(list_item)
 
 # Uses os.walk to check subfolders for files
@@ -170,7 +173,6 @@ def list_files_recursively(root_dir):
 
     return file_list
 
-# Fix issue with recursion
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         folder_path = os.getcwd()
