@@ -24,8 +24,29 @@ class Ui_asset_management(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.h_lay_search_refresh = QHBoxLayout()
+        self.h_lay_search_refresh.setObjectName(u"h_lay_search_refresh")
+        self.h_lay_search_refresh.setContentsMargins(-1, 0, -1, -1)
+        self.lb_search = QLabel(self.centralwidget)
+        self.lb_search.setObjectName(u"lb_search")
+
+        self.h_lay_search_refresh.addWidget(self.lb_search)
+
+        self.le_searchbar = QLineEdit(self.centralwidget)
+        self.le_searchbar.setObjectName(u"le_searchbar")
+
+        self.h_lay_search_refresh.addWidget(self.le_searchbar)
+
+        self.pb_refresh = QPushButton(self.centralwidget)
+        self.pb_refresh.setObjectName(u"pb_refresh")
+
+        self.h_lay_search_refresh.addWidget(self.pb_refresh)
+
+
+        self.verticalLayout_2.addLayout(self.h_lay_search_refresh)
+
+        self.v_lay_tabs = QVBoxLayout()
+        self.v_lay_tabs.setObjectName(u"v_lay_tabs")
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.video_tab = QWidget()
@@ -79,10 +100,10 @@ class Ui_asset_management(object):
 
         self.tabWidget.addTab(self.production_tab, "")
 
-        self.verticalLayout.addWidget(self.tabWidget)
+        self.v_lay_tabs.addWidget(self.tabWidget)
 
 
-        self.verticalLayout_2.addLayout(self.verticalLayout)
+        self.verticalLayout_2.addLayout(self.v_lay_tabs)
 
         asset_management.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(asset_management)
@@ -109,6 +130,8 @@ class Ui_asset_management(object):
     def retranslateUi(self, asset_management):
         asset_management.setWindowTitle(QCoreApplication.translate("asset_management", u"Asset Management", None))
         self.actionOpen.setText(QCoreApplication.translate("asset_management", u"Open", None))
+        self.lb_search.setText(QCoreApplication.translate("asset_management", u"Search:", None))
+        self.pb_refresh.setText(QCoreApplication.translate("asset_management", u"Refresh", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.video_tab), QCoreApplication.translate("asset_management", u"Video", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.text_tab), QCoreApplication.translate("asset_management", u"Text", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.image_tab), QCoreApplication.translate("asset_management", u"Image", None))

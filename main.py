@@ -58,8 +58,8 @@ class name(QMainWindow, Ui_asset_management):
         self.model_assets = Asset_Category()
         self.production_assets = Asset_Category()
 
+        self.pb_refresh.pressed.connect(self.populate_lists)
         self.populate_lists()
-
 
     # Gets the file size and uses humanize to put it in readable format
     def get_file_size(self, file):
