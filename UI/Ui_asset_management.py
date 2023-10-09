@@ -17,7 +17,7 @@ class Ui_asset_management(object):
     def setupUi(self, asset_management):
         if not asset_management.objectName():
             asset_management.setObjectName(u"asset_management")
-        asset_management.resize(800, 600)
+        asset_management.resize(970, 650)
         self.actionOpen = QAction(asset_management)
         self.actionOpen.setObjectName(u"actionOpen")
         self.centralwidget = QWidget(asset_management)
@@ -108,7 +108,7 @@ class Ui_asset_management(object):
         asset_management.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(asset_management)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 23))
+        self.menubar.setGeometry(QRect(0, 0, 970, 23))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         asset_management.setMenuBar(self.menubar)
@@ -121,7 +121,7 @@ class Ui_asset_management(object):
 
         self.retranslateUi(asset_management)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(asset_management)

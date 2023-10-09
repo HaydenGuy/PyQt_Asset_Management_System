@@ -2,12 +2,16 @@
 
 import os
 import sys
-import datetime, humanize, stat
+import datetime
+import humanize
+import stat
 
 from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem
 from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
+
+
 class Asset:
     def __init__(self, name, extension, type):
         self.name = name
@@ -18,6 +22,8 @@ class Asset:
         return f'{self.name}{self.extension}'
 
 # Class to define asset categories
+
+
 class Asset_Category:
     def __init__(self):
         self.assets = []
@@ -31,11 +37,11 @@ class Asset_Category:
         for asset, metadata in self.assets:
             if asset.name == remove_asset:
                 self.assets.remove([asset, metadata])
-    
+
     # Returns the assets list
     def list_assets(self):
         return self.assets
-    
+
 
 class name(QMainWindow, Ui_asset_management):
     def __init__(self):
@@ -44,13 +50,14 @@ class name(QMainWindow, Ui_asset_management):
 
         # Sets containing common file formats
         self.video_formats = {'.mp4', '.avi', '.mov',
-                         '.mkv', '.wmv', '.flv', '.webm', '.mpeg'}
+                              '.mkv', '.wmv', '.flv', '.webm', '.mpeg'}
         self.text_formats = {'.txt', '.csv', '.json', '.xml', '.html', '.pdf'}
-        self.image_formats = {'.jpg', '.png', '.gif', '.bmp', '.tiff', '.svg', '.exr'}
+        self.image_formats = {'.jpg', '.png',
+                              '.gif', '.bmp', '.tiff', '.svg', '.exr'}
         self.model_formats = {'.fbx', '.obj', '.stl', '.dae', '.blend'}
         self.production_formats = {'.usd', '.ma', '.mb', '.uasset',
-                              '.psd', '.ai', '.prproj', '.aep', '.drp'}
-        
+                                   '.psd', '.ai', '.prproj', '.aep', '.drp'}
+
         # Uses the Asset_Catergory class to define each category
         self.video_assets = Asset_Category()
         self.text_assets = Asset_Category()
@@ -65,11 +72,11 @@ class name(QMainWindow, Ui_asset_management):
     # Gets the file list from the folder path given in the main block
     def get_file_list(self):
         self.file_list = []
-    
+
         if os.path.exists(folder_path) and os.path.isdir(folder_path):
             for root, dirs, files in os.walk(folder_path):
                 for file in files:
-                    self.file_list.append(os.path.join(root, file))    
+                    self.file_list.append(os.path.join(root, file))
         else:
             print("Invalid path", file=sys.stderr)
 
@@ -95,7 +102,7 @@ class name(QMainWindow, Ui_asset_management):
         file_modification_time = os.path.getmtime(file)
         modification_time_readable = datetime.datetime.fromtimestamp(
             file_modification_time).strftime('%Y_%m_%d_%H_%M_%S')
-        
+
         return modification_time_readable
 
     # Gets the file permissions and uses stat to put it in readable format
@@ -142,41 +149,46 @@ class name(QMainWindow, Ui_asset_management):
     def create_asset(self, file):
         name, extension, type = self.get_file_details(file)
         asset = Asset(name, extension, type)
-        
+
         return asset
 
-    # Populate the UI tab lists based on the files found in the folder 
+    # Populate the UI tab lists based on the files found in the folder
     def populate_lists(self):
         file_list = self.get_file_list()
 
-        # Adds files in the current directory to the asset class 
+        # Adds files in the current directory to the asset class
         for file in file_list:
             asset = self.create_asset(file)
             metadata = self.get_metadata(file)
-            
+
             if asset.type == "video":
                 self.video_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
+                list_item = QListWidgetItem(
+                    f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.video_list.addItem(list_item)
 
             elif asset.type == "text":
                 self.text_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
+                list_item = QListWidgetItem(
+                    f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.text_list.addItem(list_item)
 
             elif asset.type == "image":
                 self.image_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
+                list_item = QListWidgetItem(
+                    f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.image_list.addItem(list_item)
 
             elif asset.type == "model":
                 self.model_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
+                list_item = QListWidgetItem(
+                    f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.model_list.addItem(list_item)
 
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
-                list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
+                list_item = QListWidgetItem(
+                    f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.production_list.addItem(list_item)
 
     # Refreshes the UI by clearing the exisiting lists and repopulating
@@ -188,6 +200,7 @@ class name(QMainWindow, Ui_asset_management):
         self.model_list.clear()
         self.production_list.clear()
         self.populate_lists()
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
