@@ -58,8 +58,22 @@ class name(QMainWindow, Ui_asset_management):
         self.model_assets = Asset_Category()
         self.production_assets = Asset_Category()
 
-        self.pb_refresh.pressed.connect(self.populate_lists)
         self.populate_lists()
+
+        self.pb_refresh.pressed.connect(self.refresh_ui)
+
+    # Gets the file list from the folder path given in the main block
+    def get_file_list(self):
+        self.file_list = []
+    
+        if os.path.exists(folder_path) and os.path.isdir(folder_path):
+            for root, dirs, files in os.walk(folder_path):
+                for file in files:
+                    self.file_list.append(os.path.join(root, file))    
+        else:
+            print("Invalid path", file=sys.stderr)
+
+        return self.file_list
 
     # Gets the file size and uses humanize to put it in readable format
     def get_file_size(self, file):
@@ -130,9 +144,11 @@ class name(QMainWindow, Ui_asset_management):
         asset = Asset(name, extension, type)
         
         return asset
-    
+
     # Populate the UI tab lists based on the files found in the folder 
     def populate_lists(self):
+        file_list = self.get_file_list()
+
         # Adds files in the current directory to the asset class 
         for file in file_list:
             asset = self.create_asset(file)
@@ -163,15 +179,15 @@ class name(QMainWindow, Ui_asset_management):
                 list_item = QListWidgetItem(f"{asset} \n {metadata} \n {file} \n")
                 self.production_list.addItem(list_item)
 
-# Uses os.walk to check subfolders for files
-def list_files_recursively(root_dir):
-    file_list = []
-
-    for root, dirs, files in os.walk(root_dir):
-        for file in files:
-            file_list.append(os.path.join(root, file))
-
-    return file_list
+    # Refreshes the UI by clearing the exisiting lists and repopulating
+    def refresh_ui(self):
+        self.file_list = []
+        self.video_list.clear()
+        self.text_list.clear()
+        self.image_list.clear()
+        self.model_list.clear()
+        self.production_list.clear()
+        self.populate_lists()
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -179,11 +195,6 @@ if __name__ == '__main__':
     else:
         os.chdir(sys.argv[1])
         folder_path = os.getcwd()
-
-    if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        file_list = list_files_recursively(folder_path)
-    else:
-        print("Invalid path", file=sys.stderr)
 
     app = QApplication(sys.argv)
 
