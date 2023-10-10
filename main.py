@@ -159,7 +159,7 @@ class name(QMainWindow, Ui_asset_management):
 
     # Populate the UI tab lists based on the files found in the folder
     def populate_lists(self, folder_path):
-        file_list = self.get_file_list(folder_path)
+        file_list = sorted(self.get_file_list(folder_path))
 
         # Adds files in the current directory to the asset class
         for file in file_list:
