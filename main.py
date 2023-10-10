@@ -10,8 +10,6 @@ from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem
 from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
-
-
 class Asset:
     def __init__(self, name, extension, type):
         self.name = name
@@ -22,8 +20,6 @@ class Asset:
         return f'{self.name}{self.extension}'
 
 # Class to define asset categories
-
-
 class Asset_Category:
     def __init__(self):
         self.assets = []
@@ -49,14 +45,14 @@ class name(QMainWindow, Ui_asset_management):
         self.setupUi(self)
 
         # Sets containing common file formats
-        self.video_formats = {'.mp4', '.avi', '.mov',
-                              '.mkv', '.wmv', '.flv', '.webm', '.mpeg'}
-        self.text_formats = {'.txt', '.csv', '.json', '.xml', '.html', '.pdf'}
-        self.image_formats = {'.jpg', '.png',
-                              '.gif', '.bmp', '.tiff', '.svg', '.exr'}
-        self.model_formats = {'.fbx', '.obj', '.stl', '.dae', '.blend'}
-        self.production_formats = {'.usd', '.ma', '.mb', '.uasset',
-                                   '.psd', '.ai', '.prproj', '.aep', '.drp'}
+        self.video_formats = ('.mp4', '.avi', '.mov',
+                              '.mkv', '.wmv', '.flv', '.webm', '.mpeg')
+        self.text_formats = ('.txt', '.csv', '.pdf', '.json', '.xml', '.html')
+        self.image_formats = ('.jpg', '.png',
+                              '.gif', '.bmp', '.tiff', '.svg', '.exr')
+        self.model_formats = ('.fbx', '.obj', '.stl', '.dae', '.blend')
+        self.production_formats = ('.usd', '.ma', '.mb', '.uasset',
+                                   '.psd', '.ai', '.prproj', '.aep', '.drp')
 
         # Uses the Asset_Catergory class to define each category
         self.video_assets = Asset_Category()
@@ -65,9 +61,15 @@ class name(QMainWindow, Ui_asset_management):
         self.model_assets = Asset_Category()
         self.production_assets = Asset_Category()
 
+        # Initialization modules for the UI and UI controls
         self.populate_lists()
+        self.updateUI()
+        self.tab_changed()
 
+    # Controls the logic for when the refresh button is pressed or the tab is changed
+    def updateUI(self):
         self.pb_refresh.pressed.connect(self.refresh_ui)
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
     # Gets the file list from the folder path given in the main block
     def get_file_list(self):
@@ -201,6 +203,21 @@ class name(QMainWindow, Ui_asset_management):
         self.production_list.clear()
         self.populate_lists()
 
+    # Updates the bottom text to show the file formats being searched when the tab is changed
+    def tab_changed(self):
+        current_tab_index = self.tabWidget.currentIndex()
+        current_tab_name = self.tabWidget.tabText(current_tab_index)
+
+        if current_tab_name == "Video":
+            self.lb_file_formats.setText('  '.join(map(str, self.video_formats)))
+        elif current_tab_name == "Text":
+            self.lb_file_formats.setText('  '.join(map(str, self.text_formats)))
+        elif current_tab_name == "Image":
+                    self.lb_file_formats.setText('  '.join(map(str, self.image_formats)))
+        elif current_tab_name == "Model":
+                    self.lb_file_formats.setText('  '.join(map(str, self.model_formats)))
+        elif current_tab_name == "Production":
+                    self.lb_file_formats.setText('  '.join(map(str, self.production_formats)))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

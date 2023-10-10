@@ -17,7 +17,7 @@ class Ui_asset_management(object):
     def setupUi(self, asset_management):
         if not asset_management.objectName():
             asset_management.setObjectName(u"asset_management")
-        asset_management.resize(970, 650)
+        asset_management.resize(844, 623)
         self.actionOpen = QAction(asset_management)
         self.actionOpen.setObjectName(u"actionOpen")
         self.centralwidget = QWidget(asset_management)
@@ -105,10 +105,21 @@ class Ui_asset_management(object):
 
         self.verticalLayout_2.addLayout(self.v_lay_tabs)
 
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, -1, -1)
+        self.lb_file_formats = QLabel(self.centralwidget)
+        self.lb_file_formats.setObjectName(u"lb_file_formats")
+
+        self.horizontalLayout.addWidget(self.lb_file_formats)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
+
         asset_management.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(asset_management)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 970, 23))
+        self.menubar.setGeometry(QRect(0, 0, 844, 23))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         asset_management.setMenuBar(self.menubar)
@@ -137,6 +148,7 @@ class Ui_asset_management(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.image_tab), QCoreApplication.translate("asset_management", u"Image", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.model_tab), QCoreApplication.translate("asset_management", u"Model", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.production_tab), QCoreApplication.translate("asset_management", u"Production", None))
+        self.lb_file_formats.setText(QCoreApplication.translate("asset_management", u"file_formats_go_here", None))
         self.menuFile.setTitle(QCoreApplication.translate("asset_management", u"File", None))
     # retranslateUi
 
