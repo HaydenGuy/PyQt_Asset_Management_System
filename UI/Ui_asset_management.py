@@ -17,7 +17,7 @@ class Ui_asset_management(object):
     def setupUi(self, asset_management):
         if not asset_management.objectName():
             asset_management.setObjectName(u"asset_management")
-        asset_management.resize(844, 623)
+        asset_management.resize(1080, 720)
         self.actionOpen = QAction(asset_management)
         self.actionOpen.setObjectName(u"actionOpen")
         self.centralwidget = QWidget(asset_management)
@@ -36,11 +36,6 @@ class Ui_asset_management(object):
         self.le_searchbar.setObjectName(u"le_searchbar")
 
         self.h_lay_search_refresh.addWidget(self.le_searchbar)
-
-        self.pb_refresh = QPushButton(self.centralwidget)
-        self.pb_refresh.setObjectName(u"pb_refresh")
-
-        self.h_lay_search_refresh.addWidget(self.pb_refresh)
 
 
         self.verticalLayout_2.addLayout(self.h_lay_search_refresh)
@@ -108,27 +103,37 @@ class Ui_asset_management(object):
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, -1, -1)
-        self.lb_file_formats = QLabel(self.centralwidget)
-        self.lb_file_formats.setObjectName(u"lb_file_formats")
+        self.pb_browse = QPushButton(self.centralwidget)
+        self.pb_browse.setObjectName(u"pb_browse")
 
-        self.horizontalLayout.addWidget(self.lb_file_formats)
+        self.horizontalLayout.addWidget(self.pb_browse)
+
+        self.pb_open_location = QPushButton(self.centralwidget)
+        self.pb_open_location.setObjectName(u"pb_open_location")
+
+        self.horizontalLayout.addWidget(self.pb_open_location)
+
+        self.pb_reload = QPushButton(self.centralwidget)
+        self.pb_reload.setObjectName(u"pb_reload")
+
+        self.horizontalLayout.addWidget(self.pb_reload)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
+        self.lb_file_formats = QLabel(self.centralwidget)
+        self.lb_file_formats.setObjectName(u"lb_file_formats")
+
+        self.verticalLayout_2.addWidget(self.lb_file_formats)
+
         asset_management.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(asset_management)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 844, 23))
-        self.menuFile = QMenu(self.menubar)
-        self.menuFile.setObjectName(u"menuFile")
+        self.menubar.setGeometry(QRect(0, 0, 1080, 23))
         asset_management.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(asset_management)
         self.statusbar.setObjectName(u"statusbar")
         asset_management.setStatusBar(self.statusbar)
-
-        self.menubar.addAction(self.menuFile.menuAction())
-        self.menuFile.addAction(self.actionOpen)
 
         self.retranslateUi(asset_management)
 
@@ -142,13 +147,14 @@ class Ui_asset_management(object):
         asset_management.setWindowTitle(QCoreApplication.translate("asset_management", u"Asset Management", None))
         self.actionOpen.setText(QCoreApplication.translate("asset_management", u"Open", None))
         self.lb_search.setText(QCoreApplication.translate("asset_management", u"Search:", None))
-        self.pb_refresh.setText(QCoreApplication.translate("asset_management", u"Refresh", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.video_tab), QCoreApplication.translate("asset_management", u"Video", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.text_tab), QCoreApplication.translate("asset_management", u"Text", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.image_tab), QCoreApplication.translate("asset_management", u"Image", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.model_tab), QCoreApplication.translate("asset_management", u"Model", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.production_tab), QCoreApplication.translate("asset_management", u"Production", None))
+        self.pb_browse.setText(QCoreApplication.translate("asset_management", u"Browse..", None))
+        self.pb_open_location.setText(QCoreApplication.translate("asset_management", u"Open File Location", None))
+        self.pb_reload.setText(QCoreApplication.translate("asset_management", u"Reload UI", None))
         self.lb_file_formats.setText(QCoreApplication.translate("asset_management", u"file_formats_go_here", None))
-        self.menuFile.setTitle(QCoreApplication.translate("asset_management", u"File", None))
     # retranslateUi
 

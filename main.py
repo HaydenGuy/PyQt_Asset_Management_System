@@ -68,11 +68,11 @@ class name(QMainWindow, Ui_asset_management):
         self.updateUI()
         self.tab_changed()
 
-    # Controls the logic for when the refresh button is pressed or the tab is changed
+    # Controls the logic for when the reload button is pressed or the tab is changed
     def updateUI(self):
-        self.pb_refresh.pressed.connect(self.refresh_ui)
+        self.pb_reload.pressed.connect(self.reload_ui)
         self.tabWidget.currentChanged.connect(self.tab_changed)
-        self.actionOpen.triggered.connect(self.open_folder)
+        self.pb_browse.pressed.connect(self.browse_folders)
 
     # Gets the file list from the folder path given in the main block
     def get_file_list(self, folder_path):
@@ -196,8 +196,8 @@ class name(QMainWindow, Ui_asset_management):
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.production_list.addItem(list_item)
 
-    # Refreshes the UI by clearing the exisiting lists and repopulating
-    def refresh_ui(self):
+    # Reload the UI by clearing the exisiting lists and repopulating
+    def reload_ui(self):
         self.file_list = []
         self.video_list.clear()
         self.text_list.clear()
@@ -223,7 +223,7 @@ class name(QMainWindow, Ui_asset_management):
                     self.lb_file_formats.setText('  '.join(map(str, self.production_formats)))
 
     # Updates the current folder path and allows the user to open a folder using File>Open
-    def open_folder(self):
+    def browse_folders(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ShowDirsOnly
         folder_path = QFileDialog.getExistingDirectory(self, "Select Folder", options=options)
@@ -231,7 +231,7 @@ class name(QMainWindow, Ui_asset_management):
         self.current_folder_path = folder_path
 
         if folder_path:
-            self.refresh_ui()
+            self.reload_ui()
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
