@@ -6,7 +6,7 @@ import datetime
 import humanize
 import stat
 
-from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem
+from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem, QFileDialog
 from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
@@ -61,8 +61,10 @@ class name(QMainWindow, Ui_asset_management):
         self.model_assets = Asset_Category()
         self.production_assets = Asset_Category()
 
+        self.current_folder_path = initial_folder_path
+
         # Initialization modules for the UI and UI controls
-        self.populate_lists()
+        self.populate_lists(self.current_folder_path)
         self.updateUI()
         self.tab_changed()
 
@@ -70,9 +72,10 @@ class name(QMainWindow, Ui_asset_management):
     def updateUI(self):
         self.pb_refresh.pressed.connect(self.refresh_ui)
         self.tabWidget.currentChanged.connect(self.tab_changed)
+        self.actionOpen.triggered.connect(self.open_folder)
 
     # Gets the file list from the folder path given in the main block
-    def get_file_list(self):
+    def get_file_list(self, folder_path):
         self.file_list = []
 
         if os.path.exists(folder_path) and os.path.isdir(folder_path):
@@ -155,8 +158,8 @@ class name(QMainWindow, Ui_asset_management):
         return asset
 
     # Populate the UI tab lists based on the files found in the folder
-    def populate_lists(self):
-        file_list = self.get_file_list()
+    def populate_lists(self, folder_path):
+        file_list = self.get_file_list(folder_path)
 
         # Adds files in the current directory to the asset class
         for file in file_list:
@@ -201,7 +204,7 @@ class name(QMainWindow, Ui_asset_management):
         self.image_list.clear()
         self.model_list.clear()
         self.production_list.clear()
-        self.populate_lists()
+        self.populate_lists(self.current_folder_path)
 
     # Updates the bottom text to show the file formats being searched when the tab is changed
     def tab_changed(self):
@@ -219,12 +222,23 @@ class name(QMainWindow, Ui_asset_management):
         elif current_tab_name == "Production":
                     self.lb_file_formats.setText('  '.join(map(str, self.production_formats)))
 
+    # Updates the current folder path and allows the user to open a folder using File>Open
+    def open_folder(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ShowDirsOnly
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Folder", options=options)
+
+        self.current_folder_path = folder_path
+
+        if folder_path:
+            self.refresh_ui()
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        folder_path = os.getcwd()
+        initial_folder_path = os.getcwd()
     else:
         os.chdir(sys.argv[1])
-        folder_path = os.getcwd()
+        initial_folder_path = os.getcwd()
 
     app = QApplication(sys.argv)
 
