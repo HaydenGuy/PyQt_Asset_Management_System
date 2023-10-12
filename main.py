@@ -37,7 +37,33 @@ class Asset_Category:
     # Returns the assets list
     def list_assets(self):
         return self.assets
+    
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
 
+class Trie:
+    def __init__(self, word_list):
+        self.root = TrieNode()
+        self.build_trie(word_list)
+
+    def build_trie(self, word_list):
+        for word in word_list:
+            node = self.root
+            for char in word:
+                if char not in node.children:
+                    node.children[char] = TrieNode()
+                node = node.children[char]
+            node.is_end_of_word = True
+
+    def search(self, query):
+        node = self.root
+        for char in query:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end_of_word
 
 class name(QMainWindow, Ui_asset_management):
     def __init__(self):
@@ -62,18 +88,21 @@ class name(QMainWindow, Ui_asset_management):
         self.production_assets = Asset_Category()
 
         self.current_folder_path = initial_folder_path
+        self.list_widget_items = []
 
         # Initialization modules for the UI and UI controls
         self.populate_lists(self.current_folder_path)
         self.UI_controls()
         self.tab_changed()
+        self.trie = Trie(self.list_widget_items)
 
-    # Controls the logic for when the reload button is pressed or the tab is changed
+    # Controls the logic for the push buttons, search bar, and tab changes
     def UI_controls(self):
         self.pb_reload.pressed.connect(self.reload_ui)
         self.tabWidget.currentChanged.connect(self.tab_changed)
         self.pb_browse.pressed.connect(self.browse_folders)
         self.pb_open_location.pressed.connect(self.open_file_location)
+        self.le_searchbar.textChanged.connect(self.user_search_bar)
 
     # Gets the file list from the folder path given in the main block
     def get_file_list(self, folder_path):
@@ -172,34 +201,44 @@ class name(QMainWindow, Ui_asset_management):
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.video_list.addItem(list_item)
+                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "text":
                 self.text_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.text_list.addItem(list_item)
+                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "image":
                 self.image_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.image_list.addItem(list_item)
+                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "model":
                 self.model_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.model_list.addItem(list_item)
+                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.production_list.addItem(list_item)
+                self.list_widget_items.append(f"{asset}")
+    
+    def user_search_bar(self):
+        search_query = self.le_searchbar.text()
+        result = self.trie.search(search_query)
 
     # Reload the UI by clearing the exisiting lists and repopulating
     def reload_ui(self):
         self.file_list = []
+        self.list_widget_items = []
         self.video_list.clear()
         self.text_list.clear()
         self.image_list.clear()
@@ -222,7 +261,6 @@ class name(QMainWindow, Ui_asset_management):
                     self.lb_file_formats.setText("  ".join(map(str, self.model_formats)))
         elif self.current_tab_name == "Production":
                     self.lb_file_formats.setText("  ".join(map(str, self.production_formats)))
-
 
     # Updates the current folder path and allows the user to open a folder using File>Open
     def browse_folders(self):
