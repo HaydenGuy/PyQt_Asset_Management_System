@@ -243,11 +243,12 @@ class name(QMainWindow, Ui_asset_management):
 
         return file_path
     
+    # Opens the folder of the selected list item file, returns an error if no file is selected
     def open_file_location(self):
         try:
             file_path = self.get_file_path_from_list_item()
             folder_path = os.path.dirname(file_path)
-            os.system(f"xdg-open '{folder_path}'")
+            os.system(f'xdg-open {folder_path}')
         except AttributeError:
             print("Error")
         
