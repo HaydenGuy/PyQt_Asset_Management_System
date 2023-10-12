@@ -6,7 +6,7 @@ import datetime
 import humanize
 import stat
 
-from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem, QFileDialog
+from PySide2.QtWidgets import QMainWindow, QApplication, QListWidgetItem, QFileDialog, QMessageBox
 from UI.Ui_asset_management import Ui_asset_management
 
 # Class to define an asset
@@ -17,7 +17,7 @@ class Asset:
         self.type = type
 
     def __str__(self):
-        return f'{self.name}{self.extension}'
+        return f"{self.name}{self.extension}"
 
 # Class to define asset categories
 class Asset_Category:
@@ -45,14 +45,14 @@ class name(QMainWindow, Ui_asset_management):
         self.setupUi(self)
 
         # Sets containing common file formats
-        self.video_formats = ('.mp4', '.avi', '.mov',
-                              '.mkv', '.wmv', '.flv', '.webm', '.mpeg')
-        self.text_formats = ('.txt', '.csv', '.pdf', '.json', '.xml', '.html')
-        self.image_formats = ('.jpg', '.png',
-                              '.gif', '.bmp', '.tiff', '.svg', '.exr')
-        self.model_formats = ('.fbx', '.obj', '.stl', '.dae', '.blend')
-        self.production_formats = ('.usd', '.ma', '.mb', '.uasset',
-                                   '.psd', '.ai', '.prproj', '.aep', '.drp')
+        self.video_formats = (".mp4", ".avi", ".mov",
+                              ".mkv", ".wmv", ".flv", ".webm", ".mpeg")
+        self.text_formats = (".txt", ".csv", ".pdf", ".json", ".xml", ".html")
+        self.image_formats = (".jpg", ".png",
+                              ".gif", ".bmp", ".tiff", ".svg", ".exr")
+        self.model_formats = (".fbx", ".obj", ".stl", ".dae", ".blend")
+        self.production_formats = (".usd", ".ma", ".mb", ".uasset",
+                                   ".psd", ".ai", ".prproj", ".aep", ".drp")
 
         # Uses the Asset_Catergory class to define each category
         self.video_assets = Asset_Category()
@@ -65,14 +65,15 @@ class name(QMainWindow, Ui_asset_management):
 
         # Initialization modules for the UI and UI controls
         self.populate_lists(self.current_folder_path)
-        self.updateUI()
+        self.UI_controls()
         self.tab_changed()
 
     # Controls the logic for when the reload button is pressed or the tab is changed
-    def updateUI(self):
+    def UI_controls(self):
         self.pb_reload.pressed.connect(self.reload_ui)
         self.tabWidget.currentChanged.connect(self.tab_changed)
         self.pb_browse.pressed.connect(self.browse_folders)
+        self.pb_open_location.pressed.connect(self.open_file_location)
 
     # Gets the file list from the folder path given in the main block
     def get_file_list(self, folder_path):
@@ -98,7 +99,7 @@ class name(QMainWindow, Ui_asset_management):
     def get_file_creation_time(self, file):
         file_creation_time = os.path.getctime(file)
         creation_time_readable = datetime.datetime.fromtimestamp(
-            file_creation_time).strftime('%Y_%m_%d_%H_%M_%S')
+            file_creation_time).strftime("%Y_%m_%d_%H_%M_%S")
 
         return creation_time_readable
 
@@ -106,7 +107,7 @@ class name(QMainWindow, Ui_asset_management):
     def get_file_modification_time(self, file):
         file_modification_time = os.path.getmtime(file)
         modification_time_readable = datetime.datetime.fromtimestamp(
-            file_modification_time).strftime('%Y_%m_%d_%H_%M_%S')
+            file_modification_time).strftime("%Y_%m_%d_%H_%M_%S")
 
         return modification_time_readable
 
@@ -132,7 +133,7 @@ class name(QMainWindow, Ui_asset_management):
     def get_file_details(self, file):
         file_path, file_extension = os.path.splitext(file)
 
-        split_name = file_path.split('/')
+        split_name = file_path.split("/")
         file_name = split_name[-1]
 
         if file_extension in self.video_formats:
@@ -209,18 +210,19 @@ class name(QMainWindow, Ui_asset_management):
     # Updates the bottom text to show the file formats being searched when the tab is changed
     def tab_changed(self):
         current_tab_index = self.tabWidget.currentIndex()
-        current_tab_name = self.tabWidget.tabText(current_tab_index)
+        self.current_tab_name = self.tabWidget.tabText(current_tab_index)
+    
+        if self.current_tab_name == "Video":
+            self.lb_file_formats.setText("  ".join(map(str, self.video_formats)))
+        elif self.current_tab_name == "Text":
+            self.lb_file_formats.setText("  ".join(map(str, self.text_formats)))
+        elif self.current_tab_name == "Image":
+                    self.lb_file_formats.setText("  ".join(map(str, self.image_formats)))
+        elif self.current_tab_name == "Model":
+                    self.lb_file_formats.setText("  ".join(map(str, self.model_formats)))
+        elif self.current_tab_name == "Production":
+                    self.lb_file_formats.setText("  ".join(map(str, self.production_formats)))
 
-        if current_tab_name == "Video":
-            self.lb_file_formats.setText('  '.join(map(str, self.video_formats)))
-        elif current_tab_name == "Text":
-            self.lb_file_formats.setText('  '.join(map(str, self.text_formats)))
-        elif current_tab_name == "Image":
-                    self.lb_file_formats.setText('  '.join(map(str, self.image_formats)))
-        elif current_tab_name == "Model":
-                    self.lb_file_formats.setText('  '.join(map(str, self.model_formats)))
-        elif current_tab_name == "Production":
-                    self.lb_file_formats.setText('  '.join(map(str, self.production_formats)))
 
     # Updates the current folder path and allows the user to open a folder using File>Open
     def browse_folders(self):
@@ -233,7 +235,24 @@ class name(QMainWindow, Ui_asset_management):
         if folder_path:
             self.reload_ui()
 
-if __name__ == '__main__':
+    # Gets the file path from the selected list item
+    def get_file_path_from_list_item(self):
+        selected_item = getattr(self, f"{self.current_tab_name.lower()}_list").currentItem().text()
+        selected_item_list = selected_item.split("\n")
+        file_path = selected_item_list[5]
+
+        return file_path
+    
+    def open_file_location(self):
+        try:
+            file_path = self.get_file_path_from_list_item()
+            folder_path = os.path.dirname(file_path)
+            os.system(f"xdg-open '{folder_path}'")
+        except AttributeError:
+            print("Error")
+        
+
+if __name__ == "__main__":
     if len(sys.argv) < 2:
         initial_folder_path = os.getcwd()
     else:
