@@ -46,7 +46,7 @@ class name(QMainWindow, Ui_asset_management):
         # Sets containing common file formats
         self.video_formats = (".mp4", ".avi", ".mov",
                               ".mkv", ".wmv", ".flv", ".webm", ".mpeg")
-        self.text_formats = (".txt", ".csv", ".pdf", ".json", ".xml", ".html")
+        self.text_formats = (".txt", ".csv", ".doc", ".pdf", ".json", ".xml", ".html")
         self.image_formats = (".jpg", ".png",
                               ".gif", ".bmp", ".tiff", ".svg", ".exr")
         self.model_formats = (".fbx", ".obj", ".stl", ".dae", ".blend")
