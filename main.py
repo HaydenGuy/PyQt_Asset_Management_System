@@ -37,33 +37,6 @@ class Asset_Category:
     # Returns the assets list
     def list_assets(self):
         return self.assets
-    
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.is_end_of_word = False
-
-class Trie:
-    def __init__(self, word_list):
-        self.root = TrieNode()
-        self.build_trie(word_list)
-
-    def build_trie(self, word_list):
-        for word in word_list:
-            node = self.root
-            for char in word:
-                if char not in node.children:
-                    node.children[char] = TrieNode()
-                node = node.children[char]
-            node.is_end_of_word = True
-
-    def search(self, query):
-        node = self.root
-        for char in query:
-            if char not in node.children:
-                return False
-            node = node.children[char]
-        return node.is_end_of_word
 
 class name(QMainWindow, Ui_asset_management):
     def __init__(self):
@@ -88,13 +61,11 @@ class name(QMainWindow, Ui_asset_management):
         self.production_assets = Asset_Category()
 
         self.current_folder_path = initial_folder_path
-        self.list_widget_items = []
 
         # Initialization modules for the UI and UI controls
-        self.populate_lists(self.current_folder_path)
-        self.UI_controls()
-        self.tab_changed()
-        self.trie = Trie(self.list_widget_items)
+        self.populate_lists(self.current_folder_path) # Populates the initial list of files
+        self.UI_controls() # Sets up UI control functions
+        self.tab_changed() # Handles tab changes for filtering
 
     # Controls the logic for the push buttons, search bar, and tab changes
     def UI_controls(self):
@@ -117,7 +88,7 @@ class name(QMainWindow, Ui_asset_management):
 
         return self.file_list
 
-    # Gets the file size and uses humanize to put it in readable format
+    # Gets the file list from the folder path given in the main block
     def get_file_size(self, file):
         file_size = os.path.getsize(file)
         file_size_readable = humanize.naturalsize(file_size)
@@ -201,44 +172,42 @@ class name(QMainWindow, Ui_asset_management):
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.video_list.addItem(list_item)
-                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "text":
                 self.text_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.text_list.addItem(list_item)
-                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "image":
                 self.image_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.image_list.addItem(list_item)
-                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "model":
                 self.model_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.model_list.addItem(list_item)
-                self.list_widget_items.append(f"{asset}")
 
             elif asset.type == "production":
                 self.production_assets.add_asset(asset, metadata)
                 list_item = QListWidgetItem(
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.production_list.addItem(list_item)
-                self.list_widget_items.append(f"{asset}")
     
     def user_search_bar(self):
         search_query = self.le_searchbar.text().lower()
+
         for widget_list in [self.video_list, self.text_list, self.image_list, self.model_list, self.production_list]:
             for index in range(widget_list.count()):
                 list_item = widget_list.item(index)
-                item_text = list_item.text().lower()
+                list_item_details = list_item.text().lower()
+                list_item_details_split = list_item_details.split("\n")
+                item_name = list_item_details_split[0]
 
-                if search_query not in item_text:
+                if search_query not in item_name:
                     list_item.setHidden(True)
                 else:
                     list_item.setHidden(False)
