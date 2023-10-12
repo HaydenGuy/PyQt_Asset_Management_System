@@ -250,7 +250,15 @@ class name(QMainWindow, Ui_asset_management):
             folder_path = os.path.dirname(file_path)
             os.system(f'xdg-open {folder_path}')
         except AttributeError:
-            print("Error")
+            self.error_message_box()
+    
+    # Controls the error message displayed when Open File Location button is pressed while an item is not selected
+    def error_message_box(self):
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setWindowTitle("Error")
+        msg_box.setText("Please select an item.")
+        msg_box.exec_()
         
 
 if __name__ == "__main__":
