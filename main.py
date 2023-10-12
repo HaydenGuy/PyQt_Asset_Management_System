@@ -197,6 +197,7 @@ class name(QMainWindow, Ui_asset_management):
                     f"{asset} \n {metadata[0]} \n Creation time: {metadata[1]} \n Modification time: {metadata[2]} \n Permissions: {metadata[3]} \n {file} \n")
                 self.production_list.addItem(list_item)
     
+    # Searches the list widget items and hides anything that doesn't match the search input
     def user_search_bar(self):
         search_query = self.le_searchbar.text().lower()
 
