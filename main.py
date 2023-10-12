@@ -232,8 +232,16 @@ class name(QMainWindow, Ui_asset_management):
                 self.list_widget_items.append(f"{asset}")
     
     def user_search_bar(self):
-        search_query = self.le_searchbar.text()
-        result = self.trie.search(search_query)
+        search_query = self.le_searchbar.text().lower()
+        for widget_list in [self.video_list, self.text_list, self.image_list, self.model_list, self.production_list]:
+            for index in range(widget_list.count()):
+                list_item = widget_list.item(index)
+                item_text = list_item.text().lower()
+
+                if search_query not in item_text:
+                    list_item.setHidden(True)
+                else:
+                    list_item.setHidden(False)
 
     # Reload the UI by clearing the exisiting lists and repopulating
     def reload_ui(self):
